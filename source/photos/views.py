@@ -1,11 +1,12 @@
 import secrets
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import View
 
-from photos.models import Photo, Album
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+
+from photos.models import Photo, Album, PhotoFavorite, AlbumFavorite
 
 
 # Create your views here.
@@ -74,6 +75,37 @@ class PhotoDeleteView(LoginRequiredMixin, AuthorOrPermissionMixin, DeleteView):
     permission_required = 'photos.delete_photo'
 
 
+class PhotoShareLinkView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        photo = get_object_or_404(Photo, pk=pk, author=request.user)
+        if not photo.share_token:
+            photo.share_token = secrets.token_urlsafe(24)
+            photo.save()
+        return redirect('photos:photo_detail', pk=photo.pk)
+
+
+class PhotoShareView(DetailView):
+    model = Photo
+    template_name = 'photos/photo_detail.html'
+    context_object_name = 'photo'
+    slug_field = 'share_token'
+    slug_url_kwarg = 'token'
+
+
+class PhotoFavoriteToggleView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        photo = get_object_or_404(Photo, pk=pk)
+        favorite = PhotoFavorite.objects.filter(user=request.user, photo=photo)
+        if favorite.exists():
+            favorite.delete()
+            is_favorite = False
+        else:
+            PhotoFavorite.objects.create(user=request.user, photo=photo)
+            is_favorite = True
+        return JsonResponse({'is_favorite': is_favorite})
+
+
 class AlbumDetailView(LoginRequiredMixin, DetailView):
     model = Album
     template_name = 'photos/album_detail.html'
@@ -110,19 +142,27 @@ class AlbumDeleteView(LoginRequiredMixin, AuthorOrPermissionMixin, DeleteView):
     permission_required = 'photos.delete_album'
 
 
-class PhotoShareLinkView(LoginRequiredMixin, View):
-
+class AlbumFavoriteToggleView(LoginRequiredMixin, View):
     def post(self, request, pk):
-        photo = get_object_or_404(Photo, pk=pk, author=request.user)
-        if not photo.share_token:
-            photo.share_token = secrets.token_urlsafe(24)
-            photo.save()
-        return redirect('photos:photo_detail', pk=photo.pk)
+        album = get_object_or_404(Album, pk=pk)
+        favorite = AlbumFavorite.objects.filter(user=request.user, album=album)
+        if favorite.exists():
+            favorite.delete()
+            is_favorite = False
+        else:
+            AlbumFavorite.objects.create(user=request.user, album=album)
+            is_favorite = True
+        return JsonResponse({'is_favorite': is_favorite})
 
 
-class PhotoShareView(DetailView):
-    model = Photo
-    template_name = 'photos/photo_detail.html'
-    context_object_name = 'photo'
-    slug_field = 'share_token'
-    slug_url_kwarg = 'token'
+class FavoritesListView(LoginRequiredMixin, ListView):
+    template_name = 'photos/favorites.html'
+    context_object_name = 'favorite_photos'
+
+    def get_queryset(self):
+        return Photo.objects.filter(favorited_by__user=self.request.user, is_private=False)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['favorite_albums'] = Album.objects.filter(favorited_by__user=self.request.user, is_private=False)
+        return context
