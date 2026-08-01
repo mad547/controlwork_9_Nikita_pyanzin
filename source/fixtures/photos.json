@@ -1,0 +1,74 @@
+[
+{
+  "model": "photos.album",
+  "pk": 1,
+  "fields": {
+    "title": "альбом 1",
+    "description": "",
+    "author": 2,
+    "is_private": false,
+    "created_at": "2026-08-01T12:45:45.872Z"
+  }
+},
+{
+  "model": "photos.album",
+  "pk": 2,
+  "fields": {
+    "title": "альбом 2",
+    "description": "",
+    "author": 2,
+    "is_private": true,
+    "created_at": "2026-08-01T12:46:08.345Z"
+  }
+},
+{
+  "model": "photos.album",
+  "pk": 3,
+  "fields": {
+    "title": "альбом 3",
+    "description": "",
+    "author": 3,
+    "is_private": false,
+    "created_at": "2026-08-01T12:46:20.562Z"
+  }
+},
+{
+  "model": "photos.photo",
+  "pk": 1,
+  "fields": {
+    "image": "photos/3dbac45df51c33b0bd63621081afbe29.jpg",
+    "caption": "подпись 1",
+    "author": 2,
+    "album": null,
+    "is_private": false,
+    "share_token": null,
+    "created_at": "2026-08-01T12:52:11.461Z"
+  }
+},
+{
+  "model": "photos.photo",
+  "pk": 2,
+  "fields": {
+    "image": "photos/images.jpeg",
+    "caption": "подпись2",
+    "author": 2,
+    "album": 1,
+    "is_private": true,
+    "share_token": null,
+    "created_at": "2026-08-01T12:52:58.324Z"
+  }
+},
+{
+  "model": "photos.photo",
+  "pk": 3,
+  "fields": {
+    "image": "photos/images_1.jpeg",
+    "caption": "фото3",
+    "author": 2,
+    "album": 2,
+    "is_private": true,
+    "share_token": null,
+    "created_at": "2026-08-01T12:53:34.690Z"
+  }
+}
+]

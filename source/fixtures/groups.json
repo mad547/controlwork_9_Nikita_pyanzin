@@ -1,0 +1,31 @@
+[
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Модератор",
+    "permissions": [
+      [
+        "change_album",
+        "photos",
+        "album"
+      ],
+      [
+        "delete_album",
+        "photos",
+        "album"
+      ],
+      [
+        "change_photo",
+        "photos",
+        "photo"
+      ],
+      [
+        "delete_photo",
+        "photos",
+        "photo"
+      ]
+    ]
+  }
+}
+]

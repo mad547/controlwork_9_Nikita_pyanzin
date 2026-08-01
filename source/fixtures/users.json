@@ -1,0 +1,94 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$e6hbE0RGRANdxdGM9btvAR$Q3Ow+IU/N6DvDQrwUnlViTkKdLejD6NTR4PgDvW/xDk=",
+    "last_login": "2026-08-01T12:35:33.609Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-08-01T12:34:10.752Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$CChmjwITWZckguqAuxk8Ov$zJm3po91rJ6U6OYmmsKIhye+dgvIg5uVCghn4N9Q5ek=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user1",
+    "first_name": "userone",
+    "last_name": "userones",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T12:37:19Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$MvjdZXdV0UA2EYnv7CJ7mq$eWCfcWwlaPLtZl4QFQYJYbypxJPb0tpl7dUka10mZ/s=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user2",
+    "first_name": "usertwo",
+    "last_name": "usertwos",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T12:38:38Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$gZcPqyNCjt0SzFipY3KsPX$zIZdTz9To7ZEX9Q2BKj3ca8SxvZX7E+0x2T9OevZoRM=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "user3",
+    "first_name": "userthree",
+    "last_name": "userthrees",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T12:40:09Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$K7vR5ZpR0FjzlVRamt38q8$RDF2EA5unOLPE5to8RPrOAk2fenYVK0/KHxpk33pgw8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "moderator",
+    "first_name": "moderatorone",
+    "last_name": "moderatorones",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-08-01T12:41:24Z",
+    "groups": [
+      1
+    ],
+    "user_permissions": []
+  }
+}
+]
