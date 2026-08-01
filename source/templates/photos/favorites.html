@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Избранное</h2>
+
+<h4 class="mb-3">Фотографии</h4>
+<div class="photo-grid mb-5">
+    {% for photo in favorite_photos %}
+        <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
+            <div class="mat-frame">
+                <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                <p class="mat-caption">{{ photo.caption }}</p>
+            </div>
+        </a>
+    {% empty %}
+        <p class="meta-gallery">В избранных фотографиях пока пусто</p>
+    {% endfor %}
+</div>
+
+<h4 class="mb-3">Альбомы</h4>
+<div class="photo-grid">
+    {% for album in favorite_albums %}
+        <a href="{% url 'photos:album_detail' album.pk %}" class="text-decoration-none photo-grid-item">
+            <div class="mat-frame">
+                {% with cover=album.photos.first %}
+                    {% if cover %}<img src="{{ cover.image.url }}" alt="{{ album.title }}">{% endif %}
+                {% endwith %}
+                <p class="mat-caption">{{ album.title }}</p>
+            </div>
+        </a>
+    {% empty %}
+        <p class="meta-gallery">В избранных альбомах пока пусто</p>
+    {% endfor %}
+</div>
+{% endblock %}
