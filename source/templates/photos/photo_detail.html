@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row g-4">
+    <div class="col-md-7">
+        <div class="mat-frame photo-detail-frame">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+            <p class="mat-caption">{{ photo.caption }}</p>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <p class="meta-gallery mb-1">
+            Автор: <a href="{% url 'accounts:profile' photo.author.pk %}" class="link-gallery">{{ photo.author.username }}</a>
+        </p>
+        <p class="meta-gallery mb-1">Дата: {{ photo.created_at|date:"d.m.Y H:i" }}</p>
+        {% if photo.album %}
+            <p class="meta-gallery mb-1">
+                Альбом: <a href="{% url 'photos:album_detail' photo.album.pk %}" class="link-gallery">{{ photo.album.title }}</a>
+            </p>
+        {% endif %}
+        {% if photo.is_private %}
+            <span class="badge-private">приватная</span>
+        {% endif %}
+
+        {% if photo.author == request.user %}
+            <div class="d-flex gap-2 mt-4">
+                <a href="{% url 'photos:photo_edit' photo.pk %}" class="btn-gallery-outline">Редактировать</a>
+                <a href="{% url 'photos:photo_delete' photo.pk %}" class="btn-gallery-danger">Удалить</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
