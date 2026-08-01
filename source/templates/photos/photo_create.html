@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+<div class="card-gallery card-gallery-sm">
+    <h2 class="text-center mb-4">{% if object %}Редактировать фото{% else %}Новая фотография{% endif %}</h2>
+    <form method="POST" enctype="multipart/form-data" action="">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn-gallery w-100 mt-2">Сохранить</button>
+    </form>
+</div>
+{% endblock %}
