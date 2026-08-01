@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="card-gallery card-gallery-sm">
+    <h2 class="text-center mb-4">Удалить фотографию?</h2>
+    <div class="mat-frame mb-4">
+        <img src="{{ object.image.url }}" alt="{{ object.caption }}">
+        <p class="mat-caption">{{ object.caption }}</p>
+    </div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <div class="d-flex gap-2 justify-content-center">
+            <button type="submit" class="btn-gallery-danger">Да, удалить</button>
+            <a href="{% url 'photos:photo_detail' object.pk %}" class="btn-gallery-outline">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
