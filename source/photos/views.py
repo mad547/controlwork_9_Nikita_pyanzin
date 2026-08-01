@@ -33,6 +33,13 @@ class PhotoDetailView(LoginRequiredMixin, DetailView):
     template_name = 'photos/photo_detail.html'
     context_object_name = 'photo'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_has_favorited'] = PhotoFavorite.objects.filter(
+            user=self.request.user, photo=self.object
+        ).exists()
+        return context
+
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
     model = Photo
@@ -110,6 +117,13 @@ class AlbumDetailView(LoginRequiredMixin, DetailView):
     model = Album
     template_name = 'photos/album_detail.html'
     context_object_name = 'album'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user_has_favorited'] = AlbumFavorite.objects.filter(
+            user=self.request.user, album=self.object
+        ).exists()
+        return context
 
 
 class AlbumCreateView(LoginRequiredMixin, CreateView):
