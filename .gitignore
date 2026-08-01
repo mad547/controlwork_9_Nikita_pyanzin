@@ -1,0 +1,12 @@
+source/uploads/
+*.sqlite3
+venv
+virtualenv
+pycache
+*.pyc
+.idea
+.vscode
+*.log
+.DS_Store
+settings_local.py
+.env
