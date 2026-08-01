@@ -5,12 +5,21 @@
 
 <div class="photo-grid">
     {% for photo in photos %}
-        <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
-            <div class="mat-frame">
-                <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
-                <p class="mat-caption">{{ photo.caption }}</p>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
+                <div class="mat-frame">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                    <p class="mat-caption">{{ photo.caption }}</p>
+                </div>
+            </a>
+        {% else %}
+            <div class="photo-grid-item">
+                <div class="mat-frame">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                    <p class="mat-caption">{{ photo.caption }}</p>
+                </div>
             </div>
-        </a>
+        {% endif %}
     {% empty %}
         <p class="meta-gallery">Пока нет ни одной фотографии</p>
     {% endfor %}
