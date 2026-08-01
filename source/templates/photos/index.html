@@ -1,25 +1,31 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 <h2 class="mb-4">Все фотографии</h2>
 
 <div class="photo-grid">
     {% for photo in photos %}
-        {% if request.user.is_authenticated %}
-            <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
+        <div class="photo-grid-item">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none">
+                    <div class="mat-frame">
+                        <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                        <p class="mat-caption">{{ photo.caption }}</p>
+                    </div>
+                </a>
+                <button type="button"
+                        class="fav-btn mt-2{% if photo.pk in favorited_photo_ids %} is-favorite{% endif %}"
+                        data-url="{% url 'photos:photo_favorite_toggle' photo.pk %}">
+                    {% if photo.pk in favorited_photo_ids %}В избранном ✓{% else %}В избранное{% endif %}
+                </button>
+            {% else %}
                 <div class="mat-frame">
                     <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
                     <p class="mat-caption">{{ photo.caption }}</p>
                 </div>
-            </a>
-        {% else %}
-            <div class="photo-grid-item">
-                <div class="mat-frame">
-                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
-                    <p class="mat-caption">{{ photo.caption }}</p>
-                </div>
-            </div>
-        {% endif %}
+            {% endif %}
+        </div>
     {% empty %}
         <p class="meta-gallery">Пока нет ни одной фотографии</p>
     {% endfor %}
@@ -36,4 +42,8 @@
         {% endif %}
     </div>
 {% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/favorites.js' %}"></script>
 {% endblock %}

@@ -9,6 +9,9 @@ document.querySelectorAll('.fav-btn').forEach(function (button) {
             headers: {'X-CSRFToken': csrftoken}
         })
             .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('Ошибка запроса: ' + response.status);
+                }
                 return response.json();
             })
             .then(function (data) {
@@ -21,7 +24,8 @@ document.querySelectorAll('.fav-btn').forEach(function (button) {
                 }
                 button.disabled = false;
             })
-            .catch(function () {
+            .catch(function (error) {
+                console.error('Не удалось изменить избранное:', error);
                 button.disabled = false;
             });
     });

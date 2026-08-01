@@ -27,6 +27,14 @@ class PhotoListView(ListView):
     def get_queryset(self):
         return Photo.objects.filter(is_private=False).select_related('author', 'album')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['favorited_photo_ids'] = set(
+                PhotoFavorite.objects.filter(user=self.request.user).values_list('photo_id', flat=True)
+            )
+        return context
+
 
 class PhotoDetailView(LoginRequiredMixin, DetailView):
     model = Photo
