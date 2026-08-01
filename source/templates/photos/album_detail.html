@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="mb-1">{{ album.title }} {% if album.is_private %}<span class="badge-private">приватный</span>{% endif %}</h2>
+        {% if album.description %}<p class="meta-gallery">{{ album.description }}</p>{% endif %}
+        <p class="meta-gallery mb-0">
+            Автор: <a href="{% url 'accounts:profile' album.author.pk %}" class="link-gallery">{{ album.author.username }}</a>
+        </p>
+    </div>
+    {% if album.author == request.user %}
+        <div class="d-flex gap-2">
+            <a href="{% url 'photos:album_edit' album.pk %}" class="btn-gallery-outline">Редактировать</a>
+            <a href="{% url 'photos:album_delete' album.pk %}" class="btn-gallery-danger">Удалить</a>
+        </div>
+    {% endif %}
+</div>
+
+<div class="photo-grid mt-4">
+    {% for photo in album.photos.all %}
+        {% if not photo.is_private or photo.author == request.user %}
+            <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
+                <div class="mat-frame">
+                    <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                    <p class="mat-caption">{{ photo.caption }}</p>
+                </div>
+            </a>
+        {% endif %}
+    {% empty %}
+        <p class="meta-gallery">В альбоме пока нет фотографий</p>
+    {% endfor %}
+</div>
+{% endblock %}
