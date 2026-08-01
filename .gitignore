@@ -2,7 +2,7 @@ source/uploads/
 *.sqlite3
 venv
 virtualenv
-pycache
+__pycache__
 *.pyc
 .idea
 .vscode
