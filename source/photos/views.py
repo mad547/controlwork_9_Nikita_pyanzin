@@ -1,6 +1,9 @@
+import secrets
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import View
 
 from photos.models import Photo, Album
 
@@ -105,3 +108,21 @@ class AlbumDeleteView(LoginRequiredMixin, AuthorOrPermissionMixin, DeleteView):
     template_name = 'photos/album_confirm_delete.html'
     success_url = reverse_lazy('photos:index')
     permission_required = 'photos.delete_album'
+
+
+class PhotoShareLinkView(LoginRequiredMixin, View):
+
+    def post(self, request, pk):
+        photo = get_object_or_404(Photo, pk=pk, author=request.user)
+        if not photo.share_token:
+            photo.share_token = secrets.token_urlsafe(24)
+            photo.save()
+        return redirect('photos:photo_detail', pk=photo.pk)
+
+
+class PhotoShareView(DetailView):
+    model = Photo
+    template_name = 'photos/photo_detail.html'
+    context_object_name = 'photo'
+    slug_field = 'share_token'
+    slug_url_kwarg = 'token'
