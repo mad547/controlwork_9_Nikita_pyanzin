@@ -1,0 +1,48 @@
+{% load static %}
+{% load django_bootstrap5 %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% bootstrap_css %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>Галерея</title>
+</head>
+<body>
+<nav class="nav-gallery">
+    <div class="container d-flex align-items-center justify-content-between py-3">
+        <a class="brand-gallery" href="{% url 'photos:index' %}">Галерея</a>
+        <div class="d-flex align-items-center gap-3">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'photos:album_create' %}" class="link-gallery">+ Альбом</a>
+                <a href="{% url 'photos:photo_create' %}" class="link-gallery">+ Фото</a>
+                <a href="{% url 'photos:favorites' %}" class="link-gallery">Избранное</a>
+                <a href="{% url 'accounts:profile' request.user.pk %}" class="link-gallery fw-semibold">{{ request.user.username }}</a>
+                <form method="POST" action="{% url 'accounts:logout' %}" class="d-inline m-0">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-gallery-outline">Выйти</button>
+                </form>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="btn-gallery-outline">Войти</a>
+                <a href="{% url 'accounts:register' %}" class="btn-gallery">Регистрация</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+<main class="container py-5">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert-gallery mb-4">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+</main>
+{% bootstrap_javascript %}
+<script src="{% static 'js/csrf.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
