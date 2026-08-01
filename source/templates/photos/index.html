@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4">Все фотографии</h2>
+
+<div class="photo-grid">
+    {% for photo in photos %}
+        <a href="{% url 'photos:photo_detail' photo.pk %}" class="text-decoration-none photo-grid-item">
+            <div class="mat-frame">
+                <img src="{{ photo.image.url }}" alt="{{ photo.caption }}">
+                <p class="mat-caption">{{ photo.caption }}</p>
+            </div>
+        </a>
+    {% empty %}
+        <p class="meta-gallery">Пока нет ни одной фотографии</p>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+    <div class="d-flex gap-3 justify-content-center mt-5">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="link-gallery">← Назад</a>
+        {% endif %}
+        <span class="meta-gallery">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="link-gallery">Вперёд →</a>
+        {% endif %}
+    </div>
+{% endif %}
+{% endblock %}
