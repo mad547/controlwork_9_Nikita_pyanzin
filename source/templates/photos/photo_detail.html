@@ -27,6 +27,18 @@
                 <a href="{% url 'photos:photo_edit' photo.pk %}" class="btn-gallery-outline">Редактировать</a>
                 <a href="{% url 'photos:photo_delete' photo.pk %}" class="btn-gallery-danger">Удалить</a>
             </div>
+
+            <div class="mt-4">
+                {% if photo.share_token %}
+                    <p class="meta-gallery mb-1">Ссылка доступа:</p>
+                    <div class="share-link-box">{{ request.scheme }}://{{ request.get_host }}{% url 'photos:photo_share' photo.share_token %}</div>
+                {% else %}
+                    <form method="POST" action="{% url 'photos:photo_share_link' photo.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-gallery-outline">Сгенерировать ссылку доступа</button>
+                    </form>
+                {% endif %}
+            </div>
         {% endif %}
     </div>
 </div>
